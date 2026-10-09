@@ -6,31 +6,26 @@
 <title>AMIR_GIM WALLPAPER</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#050816;color:#fff;font-family:Tahoma,Arial,sans-serif}
-header{text-align:center;padding:32px 15px;background:linear-gradient(135deg,#071b35,#10102c);border-bottom:2px solid #00bfff}
-header h1{color:#00c8ff;margin:0 0 10px;text-shadow:0 0 18px #008cff}
-header p{color:#c7eaff}
+body{margin:0;background:#050816;color:#fff;font-family:Tahoma,Arial}
+header{text-align:center;padding:30px 10px;background:linear-gradient(135deg,#071b35,#151033);border-bottom:2px solid #00bfff}
+h1{color:#00c8ff;text-shadow:0 0 15px #008cff}
 nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:15px}
-button,.search{border:1px solid #008cff;background:#101a30;color:#fff;border-radius:10px;padding:11px 14px;font-size:14px}
-button{cursor:pointer}
-button:hover,button.active{background:#007fc7}
-.search{display:block;width:min(92%,500px);margin:5px auto 20px;outline:none}
+button{background:#101a30;color:white;border:1px solid #00aaff;border-radius:10px;padding:10px;cursor:pointer}
+button.active,button:hover{background:#007fc7}
+input{display:block;width:90%;max-width:500px;margin:10px auto;padding:13px;border-radius:10px;border:1px solid #00aaff;background:#101a30;color:white}
 h2{text-align:center;color:#00c8ff}
-.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:14px;padding:15px;max-width:1200px;margin:auto}
-.card{background:#101a30;border:1px solid #123b63;border-radius:13px;overflow:hidden;transition:.2s}
-.card:hover{transform:translateY(-4px);border-color:#00c8ff}
-.card img{width:100%;height:155px;object-fit:cover;display:block;background:#18263a}
-.card h3{font-size:14px;margin:12px 10px}
-.card a{display:block;text-align:center;text-decoration:none;background:#007fc7;color:white;padding:10px;margin:10px;border-radius:8px}
-.note{text-align:center;color:#a9c6dc;padding:15px;line-height:2}
-footer{text-align:center;background:#080d1b;padding:25px;color:#9bc7e8}
-footer a{color:#00c8ff}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:13px;padding:14px;max-width:1200px;margin:auto}
+.card{background:#101a30;border:1px solid #12436a;border-radius:12px;overflow:hidden}
+.card img{width:100%;height:150px;object-fit:cover;display:block}
+.card h3{font-size:13px;padding:0 10px}
+.card a{display:block;text-align:center;background:#007fc7;color:white;padding:10px;text-decoration:none;margin:10px;border-radius:8px}
+footer{text-align:center;padding:25px;color:#a9c6dc}
 </style>
 </head>
 <body>
 <header>
 <h1>AMIR_GIM WALLPAPER</h1>
-<p>دنیای والپیپرهای فوتبال، ایران باستان و گیمینگ 💙</p>
+<p>⚽ فوتبال | 👑 ایران باستان | 🇮🇷 طبیعت ایران | 🎮 گیمینگ</p>
 </header>
 
 <nav id="filters">
@@ -41,80 +36,55 @@ footer a{color:#00c8ff}
 <button data-cat="gaming">گیمینگ</button>
 </nav>
 
-<input id="search" class="search" placeholder="🔍 نام عکس را جست‌وجو کن...">
+<input id="search" placeholder="🔍 جست‌وجوی والپیپر...">
 <h2>گالری والپیپرها</h2>
-<p class="note">برای ذخیرهٔ هر تصویر، روی «مشاهده و ذخیره» بزن.</p>
-<main class="gallery" id="gallery"></main>
-<p id="empty" class="note" hidden>عکسی پیدا نشد.</p>
-
-<footer>
-<p>ساخته‌شده با 💙 برای AMIR_GIM</p>
-<p><a href="https://t.me/" target="_blank" rel="noopener">ارتباط در تلگرام</a></p>
-</footer>
+<div class="gallery" id="gallery"></div>
+<footer>ساخته‌شده با 💙 برای AMIR_GIM</footer>
 
 <script>
-const photos = [
- {name:"فوتبال و ورزشگاه",cat:"football",img:"https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=700&q=80"},
- {name:"توپ فوتبال",cat:"football",img:"https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=700&q=80"},
- {name:"ورزشگاه فوتبال",cat:"football",img:"https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=700&q=80"},
- {name:"استادیوم",cat:"football",img:"https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=700&q=80"},
- {name:"ایران باستان",cat:"iran",img:"https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=700&q=80"},
- {name:"بنای تاریخی",cat:"iran",img:"https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=700&q=80"},
- {name:"طبیعت و کوهستان",cat:"nature",img:"https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80"},
- {name:"منظرهٔ کوهستان",cat:"nature",img:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=700&q=80"},
- {name:"گیمینگ",cat:"gaming",img:"https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=700&q=80"},
- {name:"ستاپ گیمینگ",cat:"gaming",img:"https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=700&q=80"}
+const photos=[
+["فوتبال و ورزشگاه","football","https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=700&q=80"],
+["توپ فوتبال","football","https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=700&q=80"],
+["استادیوم فوتبال","football","https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=700&q=80"],
+["تخت جمشید","iran","https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=700&q=80"],
+["بنای تاریخی","iran","https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=700&q=80"],
+["کوهستان","nature","https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80"],
+["طبیعت زیبا","nature","https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=700&q=80"],
+["گیمینگ","gaming","https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=700&q=80"],
+["ستاپ گیمینگ","gaming","https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=700&q=80"]
 ];
-
-// فعلاً ۱۰۰ جایگاه ساخته می‌شود؛ عکس‌ها تا زمان افزودن
-// ۱۰۰ فایل جداگانه از این مجموعهٔ نمونه تکرار می‌شوند.
-const allPhotos = Array.from({length:100},(_,i)=>({
- ...photos[i%photos.length],
- name:photos[i%photos.length].name+" شماره "+(i+1),
- id:i+1
-}));
 
 const gallery=document.getElementById("gallery");
 const search=document.getElementById("search");
 let category="all";
 
-function render(){
+function showPhotos(){
  const q=search.value.trim().toLowerCase();
- const list=allPhotos.filter(p=>
-  (category==="all"||p.cat===category)&&
-  p.name.toLowerCase().includes(q)
- );
  gallery.innerHTML="";
- document.getElementById("empty").hidden=list.length>0;
- list.forEach(p=>{
-  const card=document.createElement("article");
+ const found=photos.filter(p=>(category==="all"||p[1]===category)&&p[0].toLowerCase().includes(q));
+ found.forEach(p=>{
+  const card=document.createElement("div");
   card.className="card";
   const img=document.createElement("img");
-  img.src=p.img;
-  img.alt=p.name;
-  img.loading="lazy";
-  img.onerror=()=>{img.style.display="none"};
+  img.src=p[2];img.alt=p[0];img.loading="lazy";
   const title=document.createElement("h3");
-  title.textContent=p.name;
+  title.textContent=p[0];
   const link=document.createElement("a");
-  link.href=p.img;
-  link.target="_blank";
-  link.rel="noopener";
+  link.href=p[2];link.target="_blank";link.rel="noopener";
   link.textContent="مشاهده و ذخیره";
   card.append(img,title,link);
-  gallery.append(card);
+  gallery.appendChild(card);
  });
 }
-document.querySelectorAll("#filters button").forEach(btn=>{
- btn.addEventListener("click",()=>{
-  category=btn.dataset.cat;
-  document.querySelectorAll("#filters button").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  render();
- });
+document.querySelectorAll("#filters button").forEach(b=>{
+ b.onclick=()=>{
+  category=b.dataset.cat;
+  document.querySelectorAll("#filters button").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");showPhotos();
+ };
 });
-search.addEventListener("input",render);
-render();
+search.addEventListener("input",showPhotos);
+showPhotos();
 </script>
 </body>
 </html>
