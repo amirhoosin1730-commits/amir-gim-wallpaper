@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -6,15 +7,18 @@
 <title>AMIR_GIM WALLPAPER</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#050816;color:#fff;font-family:Tahoma,Arial}
-header{text-align:center;padding:30px 10px;background:linear-gradient(135deg,#071b35,#151033);border-bottom:2px solid #00bfff}
+body{margin:0;background:#050816;color:white;font-family:Tahoma,Arial}
+header{text-align:center;padding:25px 10px;background:linear-gradient(135deg,#071b35,#151033);border-bottom:2px solid #00bfff}
 h1{color:#00c8ff;text-shadow:0 0 15px #008cff}
 nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:15px}
-button{background:#101a30;color:white;border:1px solid #00aaff;border-radius:10px;padding:10px;cursor:pointer}
+button{background:#101a30;color:white;border:1px solid #00aaff;border-radius:10px;padding:11px;cursor:pointer}
 button.active,button:hover{background:#007fc7}
-input{display:block;width:90%;max-width:500px;margin:10px auto;padding:13px;border-radius:10px;border:1px solid #00aaff;background:#101a30;color:white}
+input{display:block;width:100%;margin:9px 0;padding:12px;border-radius:9px;border:1px solid #00aaff;background:#101a30;color:white}
 h2{text-align:center;color:#00c8ff}
-.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:13px;padding:14px;max-width:1200px;margin:auto}
+.panel{max-width:480px;margin:15px auto;padding:16px;background:#0b1428;border:1px solid #12436a;border-radius:14px}
+.panel button{margin:4px}
+#message{text-align:center;color:#6de6ff;font-size:13px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:13px;padding:14px;max-width:1200px;margin:auto}
 .card{background:#101a30;border:1px solid #12436a;border-radius:12px;overflow:hidden}
 .card img{width:100%;height:150px;object-fit:cover;display:block}
 .card h3{font-size:13px;padding:0 10px}
@@ -28,6 +32,17 @@ footer{text-align:center;padding:25px;color:#a9c6dc}
 <p>⚽ فوتبال | 👑 ایران باستان | 🇮🇷 طبیعت ایران | 🎮 گیمینگ</p>
 </header>
 
+<section class="panel">
+<h2>👤 حساب کاربری</h2>
+<p id="userStatus" style="text-align:center">برای ورود یا ثبت‌نام ایمیلت را وارد کن.</p>
+<input id="email" type="email" placeholder="ایمیل">
+<input id="password" type="password" placeholder="رمز عبور (حداقل ۶ کاراکتر)">
+<button id="signup">ثبت‌نام</button>
+<button id="login">ورود</button>
+<button id="logout" hidden>خروج از حساب</button>
+<p id="message"></p>
+</section>
+
 <nav id="filters">
 <button class="active" data-cat="all">همه</button>
 <button data-cat="football">فوتبال</button>
@@ -36,12 +51,17 @@ footer{text-align:center;padding:25px;color:#a9c6dc}
 <button data-cat="gaming">گیمینگ</button>
 </nav>
 
-<input id="search" placeholder="🔍 جست‌وجوی والپیپر...">
+<input id="search" placeholder="🔍 جست‌وجوی والپیپر..." style="width:90%;max-width:500px;margin:10px auto">
 <h2>گالری والپیپرها</h2>
 <div class="gallery" id="gallery"></div>
 <footer>ساخته‌شده با 💙 برای AMIR_GIM</footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const SUPABASE_URL="https://fcpwivigdlxzyywvpies.supabase.co";
+const SUPABASE_KEY="sb_publishable_GceXTTl-mT2rg4KVpoJG_w_3HcZL_Zm";
+const authClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
 const photos=[
 ["فوتبال و ورزشگاه","football","https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=700&q=80"],
 ["توپ فوتبال","football","https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=700&q=80"],
@@ -61,8 +81,7 @@ let category="all";
 function showPhotos(){
  const q=search.value.trim().toLowerCase();
  gallery.innerHTML="";
- const found=photos.filter(p=>(category==="all"||p[1]===category)&&p[0].toLowerCase().includes(q));
- found.forEach(p=>{
+ photos.filter(p=>(category==="all"||p[1]===category)&&p[0].toLowerCase().includes(q)).forEach(p=>{
   const card=document.createElement("div");
   card.className="card";
   const img=document.createElement("img");
@@ -76,6 +95,7 @@ function showPhotos(){
   gallery.appendChild(card);
  });
 }
+
 document.querySelectorAll("#filters button").forEach(b=>{
  b.onclick=()=>{
   category=b.dataset.cat;
@@ -85,6 +105,40 @@ document.querySelectorAll("#filters button").forEach(b=>{
 });
 search.addEventListener("input",showPhotos);
 showPhotos();
+
+const email=document.getElementById("email");
+const password=document.getElementById("password");
+const message=document.getElementById("message");
+
+document.getElementById("signup").onclick=async()=>{
+ message.textContent="در حال ثبت‌نام...";
+ const {data,error}=await authClient.auth.signUp({
+  email:email.value.trim(),password:password.value
+ });
+ if(error){message.textContent="خطا: "+error.message;return;}
+ message.textContent=data.session
+  ?"ثبت‌نام موفق بود! 🎉"
+  :"ثبت‌نام انجام شد؛ ایمیلت را برای تأیید بررسی کن. 📩";
+};
+
+document.getElementById("login").onclick=async()=>{
+ message.textContent="در حال ورود...";
+ const {error}=await authClient.auth.signInWithPassword({
+  email:email.value.trim(),password:password.value
+ });
+ message.textContent=error?"خطا: "+error.message:"با موفقیت وارد شدی! 💙";
+};
+
+document.getElementById("logout").onclick=async()=>{
+ const {error}=await authClient.auth.signOut();
+ message.textContent=error?"خطا: "+error.message:"از حساب خارج شدی.";
+};
+
+authClient.auth.onAuthStateChange((_event,session)=>{
+ document.getElementById("userStatus").textContent=
+  session?"وارد شدی: "+session.user.email:"برای ورود یا ثبت‌نام ایمیلت را وارد کن.";
+ document.getElementById("logout").hidden=!session;
+});
 </script>
 </body>
 </html>
